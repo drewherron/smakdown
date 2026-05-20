@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Smakdown",
+  "version": "0.1.0",
+  "description": "Save recipes from any page to a local notes file.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "smakdown@smakdown.local",
+      "strict_min_version": "115.0"
+    }
+  },
+  "action": {
+    "default_title": "Save recipe",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "notifications",
+    "nativeMessaging"
+  ],
+  "host_permissions": [
+    "https://api.anthropic.com/*"
+  ],
+  "background": {
+    "scripts": ["background/background.js"]
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  }
+}
