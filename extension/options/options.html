@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Smakdown — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Smakdown</h1>
+
+      <form id="settings-form">
+        <label>
+          <span>Anthropic API key</span>
+          <input type="password" id="api-key" autocomplete="off" spellcheck="false" />
+        </label>
+
+        <label>
+          <span>Output file path</span>
+          <input type="text" id="output-path" placeholder="/home/you/notes/recipes.org" spellcheck="false" />
+          <small>Absolute path. The native messaging helper will append to this file.</small>
+        </label>
+
+        <fieldset>
+          <legend>Output format</legend>
+          <label class="radio">
+            <input type="radio" name="format" value="org" />
+            <span>Org-mode</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="format" value="md" />
+            <span>Markdown</span>
+          </label>
+        </fieldset>
+
+        <label class="checkbox">
+          <input type="checkbox" id="open-in-tab" />
+          <span>Also open extracted recipe in a new tab</span>
+        </label>
+
+        <div class="actions">
+          <button type="submit">Save</button>
+          <span id="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </main>
+
+    <script src="options.js"></script>
+  </body>
+</html>
