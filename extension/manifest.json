@@ -35,6 +35,7 @@
   "background": {
     "scripts": [
       "background/preprocess/jsonld.js",
+      "background/preprocess/microdata.js",
       "background/background.js"
     ]
   },
