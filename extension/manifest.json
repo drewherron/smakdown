@@ -33,7 +33,10 @@
     "https://api.anthropic.com/*"
   ],
   "background": {
-    "scripts": ["background/background.js"]
+    "scripts": [
+      "background/preprocess/jsonld.js",
+      "background/background.js"
+    ]
   },
   "options_ui": {
     "page": "options/options.html",
