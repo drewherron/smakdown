@@ -12,12 +12,15 @@ browser.action.onClicked.addListener(async (tab) => {
       source = "microdata";
     }
 
+    const cleanedText = await extractMainContent(tab.id);
+    console.log(`[smakdown] cleaned text: ${cleanedText.length} chars`);
+
     if (recipe) {
       console.log(`[smakdown] recipe found via ${source}`, recipe);
-      message = `Found recipe (${source}): ${recipe.name ?? "(untitled)"}`;
+      message = `Found recipe (${source}): ${recipe.name ?? "(untitled)"} · ${cleanedText.length} chars text`;
     } else {
       console.log("[smakdown] no structured recipe on page");
-      message = "No structured recipe found on this page.";
+      message = `No structured recipe; extracted ${cleanedText.length} chars of text.`;
     }
   } catch (err) {
     console.error("[smakdown] recipe extraction failed", err);
