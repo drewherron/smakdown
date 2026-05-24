@@ -5,25 +5,17 @@ browser.action.onClicked.addListener(async (tab) => {
 
   let message;
   try {
-    let recipe = await extractRecipeJsonLd(tab.id);
-    let source = "JSON-LD";
-    if (!recipe) {
-      recipe = await extractRecipeMicrodata(tab.id);
-      source = "microdata";
-    }
+    const { payload, source } = await preprocessPage(tab);
+    console.log("[smakdown] preprocess payload", payload);
 
-    const cleanedText = await extractMainContent(tab.id);
-    console.log(`[smakdown] cleaned text: ${cleanedText.length} chars`);
-
-    if (recipe) {
-      console.log(`[smakdown] recipe found via ${source}`, recipe);
-      message = `Found recipe (${source}): ${recipe.name ?? "(untitled)"} · ${cleanedText.length} chars text`;
+    const textKb = (payload.cleanedText.length / 1024).toFixed(1);
+    if (payload.jsonLdHint) {
+      message = `Found recipe (${source}): ${payload.jsonLdHint.name ?? "(untitled)"} · ${textKb} KB text`;
     } else {
-      console.log("[smakdown] no structured recipe on page");
-      message = `No structured recipe; extracted ${cleanedText.length} chars of text.`;
+      message = `No structured recipe; extracted ${textKb} KB of text.`;
     }
   } catch (err) {
-    console.error("[smakdown] recipe extraction failed", err);
+    console.error("[smakdown] preprocessing failed", err);
     message = `Extraction error: ${err.message}`;
   }
 

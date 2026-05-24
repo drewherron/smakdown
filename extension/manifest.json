@@ -37,6 +37,7 @@
       "background/preprocess/jsonld.js",
       "background/preprocess/microdata.js",
       "background/preprocess/content.js",
+      "background/preprocess/index.js",
       "background/background.js"
     ]
   },
