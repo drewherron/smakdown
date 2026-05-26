@@ -6,17 +6,20 @@ browser.action.onClicked.addListener(async (tab) => {
   let message;
   try {
     const { payload, source } = await preprocessPage(tab);
-    console.log("[smakdown] preprocess payload", payload);
+    console.log(`[smakdown] preprocessed (${source ?? "no hint"})`, payload);
 
-    const textKb = (payload.cleanedText.length / 1024).toFixed(1);
-    if (payload.jsonLdHint) {
-      message = `Found recipe (${source}): ${payload.jsonLdHint.name ?? "(untitled)"} · ${textKb} KB text`;
-    } else {
-      message = `No structured recipe; extracted ${textKb} KB of text.`;
-    }
+    const settings = await browser.storage.local.get({
+      apiKey: "",
+      model: "",
+      provider: "anthropic",
+    });
+
+    const recipe = await structureRecipe(payload, settings);
+    console.log("[smakdown] structured recipe", recipe);
+    message = `Structured: ${recipe.title} (${recipe.ingredients.length} ingredients, ${recipe.steps.length} steps)`;
   } catch (err) {
-    console.error("[smakdown] preprocessing failed", err);
-    message = `Extraction error: ${err.message}`;
+    console.error("[smakdown] recipe pipeline failed", err);
+    message = err.message;
   }
 
   await browser.notifications.create({

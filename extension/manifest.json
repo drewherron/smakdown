@@ -38,6 +38,9 @@
       "background/preprocess/microdata.js",
       "background/preprocess/content.js",
       "background/preprocess/index.js",
+      "background/llm/schema.js",
+      "background/llm/anthropic.js",
+      "background/llm/index.js",
       "background/background.js"
     ]
   },
