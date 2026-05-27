@@ -41,6 +41,7 @@
       "background/llm/schema.js",
       "background/llm/anthropic.js",
       "background/llm/index.js",
+      "background/format/index.js",
       "background/background.js"
     ]
   },

@@ -12,11 +12,15 @@ browser.action.onClicked.addListener(async (tab) => {
       apiKey: "",
       model: "",
       provider: "anthropic",
+      format: "org",
     });
 
     const recipe = await structureRecipe(payload, settings);
     console.log("[smakdown] structured recipe", recipe);
-    message = `Structured: ${recipe.title} (${recipe.ingredients.length} ingredients, ${recipe.steps.length} steps)`;
+
+    const formatted = formatRecipe(recipe, settings.format);
+    console.log(`[smakdown] formatted (${settings.format}):\n${formatted}`);
+    message = `Formatted: ${recipe.title} (${settings.format})`;
   } catch (err) {
     console.error("[smakdown] recipe pipeline failed", err);
     message = err.message;
