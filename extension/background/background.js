@@ -13,14 +13,16 @@ browser.action.onClicked.addListener(async (tab) => {
       model: "",
       provider: "anthropic",
       format: "org",
+      outputPath: "",
     });
 
     const recipe = await structureRecipe(payload, settings);
     console.log("[smakdown] structured recipe", recipe);
 
     const formatted = formatRecipe(recipe, settings.format);
-    console.log(`[smakdown] formatted (${settings.format}):\n${formatted}`);
-    message = `Formatted: ${recipe.title} (${settings.format})`;
+    await appendToFile(settings.outputPath, formatted);
+
+    message = `Saved: ${recipe.title}`;
   } catch (err) {
     console.error("[smakdown] recipe pipeline failed", err);
     message = err.message;
