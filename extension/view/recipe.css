@@ -1,0 +1,100 @@
+/* Smakdown — rendered recipe view (optional "open in tab" mode).
+   A clean reading layout for the just-saved recipe. Purely presentational;
+   the saved notes file remains the source of truth. */
+
+:root {
+  color-scheme: light dark;
+  --fg: #1c1b19;
+  --muted: #6b6760;
+  --accent: #8a3a1e;
+  --rule: #e4ded3;
+  --bg: #fbf8f1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #ece7dd;
+    --muted: #a39d92;
+    --accent: #e0996f;
+    --rule: #34302a;
+    --bg: #1b1916;
+  }
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+  color: var(--fg);
+  font: 16px/1.6 ui-serif, Georgia, "Times New Roman", serif;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+h2 {
+  margin: 2.25rem 0 0.75rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Metadata: yield, times, source, captured-at */
+dl#meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.9rem;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+dl#meta dt {
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+}
+
+dl#meta dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+dl#meta a {
+  color: inherit;
+}
+
+ul,
+ol {
+  padding-left: 1.4rem;
+}
+
+li {
+  margin: 0.35rem 0;
+}
+
+li .note {
+  color: var(--muted);
+  font-style: italic;
+}
+
+#notes p {
+  white-space: pre-wrap;
+}
+
+#error {
+  margin-top: 3rem;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+}

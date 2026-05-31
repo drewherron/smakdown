@@ -43,6 +43,7 @@
       "background/llm/index.js",
       "background/format/index.js",
       "background/native/append.js",
+      "background/view/open.js",
       "background/background.js"
     ]
   },

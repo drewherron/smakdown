@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smakdown</title>
+    <link rel="stylesheet" href="recipe.css" />
+  </head>
+  <body>
+    <main id="recipe" hidden>
+      <header>
+        <h1 id="title"></h1>
+        <dl id="meta"></dl>
+      </header>
+
+      <section id="ingredients-section">
+        <h2>Ingredients</h2>
+        <ul id="ingredients"></ul>
+      </section>
+
+      <section id="steps-section">
+        <h2>Steps</h2>
+        <ol id="steps"></ol>
+      </section>
+
+      <section id="notes-section" hidden>
+        <h2>Notes</h2>
+        <p id="notes"></p>
+      </section>
+    </main>
+
+    <p id="error" hidden></p>
+
+    <script src="recipe.js"></script>
+  </body>
+</html>

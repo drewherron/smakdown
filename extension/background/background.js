@@ -14,6 +14,7 @@ browser.action.onClicked.addListener(async (tab) => {
       provider: "anthropic",
       format: "org",
       outputPath: "",
+      openInTab: false,
     });
 
     const recipe = await structureRecipe(payload, settings);
@@ -21,6 +22,9 @@ browser.action.onClicked.addListener(async (tab) => {
 
     const formatted = formatRecipe(recipe, settings.format);
     await appendToFile(settings.outputPath, formatted);
+
+    // Silent-save is primary; optionally also open a styled render in a new tab.
+    if (settings.openInTab) await openRecipeTab(recipe);
 
     message = `Saved: ${recipe.title}`;
   } catch (err) {
