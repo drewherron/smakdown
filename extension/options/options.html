@@ -12,13 +12,15 @@
       <form id="settings-form">
         <label>
           <span>Anthropic API key</span>
-          <input type="password" id="api-key" autocomplete="off" spellcheck="false" />
+          <input type="password" id="api-key" autocomplete="off" spellcheck="false" aria-describedby="api-key-error" />
+          <small class="error" id="api-key-error" aria-live="polite" hidden></small>
         </label>
 
         <label>
           <span>Output file path</span>
-          <input type="text" id="output-path" placeholder="/home/you/notes/recipes.org" spellcheck="false" />
+          <input type="text" id="output-path" placeholder="/home/you/notes/recipes.org" spellcheck="false" aria-describedby="output-path-error" />
           <small>Absolute path. The native messaging helper will append to this file.</small>
+          <small class="error" id="output-path-error" aria-live="polite" hidden></small>
         </label>
 
         <fieldset>
@@ -39,7 +41,8 @@
         </label>
 
         <div class="actions">
-          <button type="submit">Save</button>
+          <button type="submit" class="primary">Save</button>
+          <button type="button" id="cancel">Cancel</button>
           <span id="status" aria-live="polite"></span>
         </div>
       </form>
