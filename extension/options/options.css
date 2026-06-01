@@ -81,6 +81,58 @@ label.checkbox {
   font-weight: 400;
 }
 
+/* Inline help: a small "?" badge that reveals a tooltip on hover/focus. */
+.help {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid #888;
+  border-radius: 50%;
+  color: #888;
+  font-size: 0.75rem;
+  line-height: 1;
+  cursor: help;
+}
+
+.help .tooltip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  width: 18rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 4px;
+  background: #222;
+  color: #f0f0f0;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  z-index: 10;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+/* Little arrow under the bubble. */
+.help .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0.4rem;
+  border: 5px solid transparent;
+  border-top-color: #222;
+}
+
+.help:hover .tooltip,
+.help:focus .tooltip,
+.help:focus-within .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .actions {
   display: flex;
   align-items: center;

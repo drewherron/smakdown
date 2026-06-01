@@ -5,12 +5,14 @@ const DEFAULTS = {
   outputPath: "",
   format: "org",
   openInTab: false,
+  detailedNotes: false,
 };
 
 const form = document.getElementById("settings-form");
 const apiKeyEl = document.getElementById("api-key");
 const outputPathEl = document.getElementById("output-path");
 const openInTabEl = document.getElementById("open-in-tab");
+const detailedNotesEl = document.getElementById("detailed-notes");
 const statusEl = document.getElementById("status");
 const cancelEl = document.getElementById("cancel");
 
@@ -56,6 +58,7 @@ async function load() {
   apiKeyEl.value = stored.apiKey;
   outputPathEl.value = stored.outputPath;
   openInTabEl.checked = stored.openInTab;
+  detailedNotesEl.checked = stored.detailedNotes;
   const formatRadio = document.querySelector(
     `input[name="format"][value="${stored.format}"]`,
   );
@@ -75,6 +78,7 @@ async function save(event) {
     outputPath,
     format,
     openInTab: openInTabEl.checked,
+    detailedNotes: detailedNotesEl.checked,
   });
   statusEl.textContent = "Saved.";
   setTimeout(() => (statusEl.textContent = ""), 1500);

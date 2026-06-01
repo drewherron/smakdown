@@ -48,18 +48,29 @@ const RECIPE_SCHEMA = {
   additionalProperties: false,
 };
 
-const SYSTEM_PROMPT = `You extract cooking recipes from messy web-page text into a single standardized JSON object.
+// The "notes" rule is the one part of the system prompt that varies with the
+// user's "Detailed notes" setting. Two fixed variants (chosen per request, but
+// each a constant string) rather than a string mutated at call time — so the
+// system prompt stays a stable, cacheable prefix in either mode.
+const NOTES_RULE_BRIEF = `- Notes: distill genuinely useful context from the surrounding article — headnotes, tips, substitutions, make-ahead/storage advice. Summarize in your own words; do not copy marketing copy, ads, SEO filler, or comments. If there's nothing useful, use null.`;
+
+const NOTES_RULE_DETAILED = `- Notes: generously capture the context around the recipe — the dish's history and origin, the author's headnotes and personal story, why they make it this way, plus tips, substitutions, and make-ahead/storage advice. Retell it in your own words as one flowing paragraph (a handful of sentences); keep what gives the recipe its character. Leave out ads, SEO filler, navigation, and reader comments. If the article offers no surrounding context at all, use null.`;
+
+// Build the system prompt for a request. `detailed` toggles the notes rule.
+function buildSystemPrompt(detailed) {
+  return `You extract cooking recipes from messy web-page text into a single standardized JSON object.
 
 Rules:
 - Use only what the page provides. Do not invent ingredients, quantities, or steps. If a field is unknown, use null (or [] for empty lists).
 - If the page contains no cooking recipe at all, do not fabricate one: return an empty string for "title" and empty arrays for "ingredients" and "steps".
 - Split ingredients into quantity / unit / item / note. "note" holds prep or parentheticals (e.g. "softened", "finely chopped", "about 2 cups"). Keep the item itself clean.
 - Steps: one clear instruction per array entry, in order. Preserve the author's step boundaries when the text already delimits them (e.g. dashed list lines). Do not merge distinct steps or split a single step into several.
-- "notes": distill genuinely useful context from the surrounding article — headnotes, tips, substitutions, make-ahead/storage advice. Summarize in your own words; do not copy marketing copy, ads, SEO filler, or comments. If there's nothing useful, use null.
+${detailed ? NOTES_RULE_DETAILED : NOTES_RULE_BRIEF}
 - Normalize lightly: trim whitespace, fix obvious OCR-ish artifacts, keep the original wording and measurement system. Don't convert units.
 - A JSON-LD hint may be provided. Treat it as a helpful but possibly incomplete or noisy signal; reconcile it against the page text rather than trusting it blindly.`;
+}
 
-// A compact input→output example, included as a static format anchor. The
+// A compact input->output example, included as a static format anchor. The
 // caching breakpoint is placed after this block (it's the end of the stable
 // prefix), so it's worth keeping verbatim and stable.
 const FORMAT_ANCHOR = `Example.

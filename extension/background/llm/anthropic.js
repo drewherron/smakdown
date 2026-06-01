@@ -54,7 +54,7 @@ async function callAnthropic(payload, settings) {
     // cacheable prefix is ~4096 tokens; if the prefix is shorter, caching is
     // simply a no-op — no error.)
     system: [
-      { type: "text", text: SYSTEM_PROMPT },
+      { type: "text", text: buildSystemPrompt(settings.detailedNotes) },
       {
         type: "text",
         text: FORMAT_ANCHOR,

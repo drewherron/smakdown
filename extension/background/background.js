@@ -32,6 +32,7 @@ browser.action.onClicked.addListener(async (tab) => {
       format: "org",
       outputPath: "",
       openInTab: false,
+      detailedNotes: false,
     });
 
     const recipe = await structureRecipe(payload, settings);
