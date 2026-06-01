@@ -9,6 +9,11 @@ const NO_RECIPE_MESSAGE = "No recipe found on this page.";
 browser.action.onClicked.addListener(async (tab) => {
   console.log("[smakdown] action clicked", { tabId: tab.id, url: tab.url });
 
+  // A save takes a few seconds (the LLM call); show a working badge on the icon
+  // so the click clearly registered. Scoped to this tab and cleared in finally.
+  browser.action.setBadgeBackgroundColor({ color: "#8a3a1e", tabId: tab.id });
+  browser.action.setBadgeText({ text: "…", tabId: tab.id });
+
   let message;
   try {
     const { payload, source } = await preprocessPage(tab);
@@ -52,6 +57,8 @@ browser.action.onClicked.addListener(async (tab) => {
       console.error("[smakdown] recipe pipeline failed", err);
     }
     message = err.message;
+  } finally {
+    browser.action.setBadgeText({ text: "", tabId: tab.id });
   }
 
   await browser.notifications.create({
