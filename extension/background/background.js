@@ -1,5 +1,11 @@
 // Smakdown — background script
 
+// Distinguishes "this page has no recipe" (informational) from a real pipeline
+// failure (bad key, network, helper down). Both end in a toast, but a non-recipe
+// page isn't an error — we log it differently and don't append anything.
+class NoRecipeError extends Error {}
+const NO_RECIPE_MESSAGE = "No recipe found on this page.";
+
 browser.action.onClicked.addListener(async (tab) => {
   console.log("[smakdown] action clicked", { tabId: tab.id, url: tab.url });
 
@@ -7,6 +13,12 @@ browser.action.onClicked.addListener(async (tab) => {
   try {
     const { payload, source } = await preprocessPage(tab);
     console.log(`[smakdown] preprocessed (${source ?? "no hint"})`, payload);
+
+    // Nothing usable on the page — no structured hint and essentially no article
+    // text. Don't spend an LLM call to hallucinate a recipe from nothing.
+    if (!payload.jsonLdHint && payload.cleanedText.trim().length < 64) {
+      throw new NoRecipeError(NO_RECIPE_MESSAGE);
+    }
 
     const settings = await browser.storage.local.get({
       apiKey: "",
@@ -20,6 +32,12 @@ browser.action.onClicked.addListener(async (tab) => {
     const recipe = await structureRecipe(payload, settings);
     console.log("[smakdown] structured recipe", recipe);
 
+    // The LLM found no recipe (no ingredients and no steps) — there was page text,
+    // but it isn't a recipe. Don't append an empty/hallucinated entry.
+    if (!recipe.ingredients.length && !recipe.steps.length) {
+      throw new NoRecipeError(NO_RECIPE_MESSAGE);
+    }
+
     const formatted = formatRecipe(recipe, settings.format);
     await appendToFile(settings.outputPath, formatted);
 
@@ -28,7 +46,11 @@ browser.action.onClicked.addListener(async (tab) => {
 
     message = `Saved: ${recipe.title}`;
   } catch (err) {
-    console.error("[smakdown] recipe pipeline failed", err);
+    if (err instanceof NoRecipeError) {
+      console.info("[smakdown] no recipe on page", tab.url);
+    } else {
+      console.error("[smakdown] recipe pipeline failed", err);
+    }
     message = err.message;
   }
 

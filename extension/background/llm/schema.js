@@ -52,6 +52,7 @@ const SYSTEM_PROMPT = `You extract cooking recipes from messy web-page text into
 
 Rules:
 - Use only what the page provides. Do not invent ingredients, quantities, or steps. If a field is unknown, use null (or [] for empty lists).
+- If the page contains no cooking recipe at all, do not fabricate one: return an empty string for "title" and empty arrays for "ingredients" and "steps".
 - Split ingredients into quantity / unit / item / note. "note" holds prep or parentheticals (e.g. "softened", "finely chopped", "about 2 cups"). Keep the item itself clean.
 - Steps: one clear instruction per array entry, in order. Preserve the author's step boundaries when the text already delimits them (e.g. dashed list lines). Do not merge distinct steps or split a single step into several.
 - "notes": distill genuinely useful context from the surrounding article — headnotes, tips, substitutions, make-ahead/storage advice. Summarize in your own words; do not copy marketing copy, ads, SEO filler, or comments. If there's nothing useful, use null.
