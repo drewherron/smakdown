@@ -3,9 +3,7 @@
 A browser extension that extracts cooking recipes from any webpage and appends
 them to your notes file in a clean, consistent format.
 
-## Status
-
-Early development. Not yet usable.
+Currently only works with Claude. More options incoming.
 
 ## How it works
 
@@ -28,14 +26,41 @@ Two pieces:
 
 ## Install
 
-Not ready yet. Will require:
+Three steps: install the extension, install the helper, add an API key.
 
-- Side-loading the extension into Firefox.
-- Installing the native messaging helper (one-time, per-machine).
-- An LLM API key.
+### 1. The extension
 
-At first, Claude will be the only LLM option. Later we'll also allow
-ChatGPT and Gemini, selecting your LLM in the settings menu.
+**From a release (recommended).** Download the signed `.xpi` from the
+[latest release][releases], then open `about:addons` in Firefox/Zen →
+gear icon → "Install Add-on From File" → pick the `.xpi`. This survives
+restarts.
+
+[releases]: https://github.com/drewherron/smakdown/releases
+
+### 2. The helper
+
+The extension can't write to files on its own, so a tiny Python script
+(stdlib only) does the append over native messaging. Download
+`smakdown-helper-<version>.zip` from the [latest release][releases],
+unzip it, then:
+
+```sh
+cd helper && ./install.sh
+```
+
+Then restart the browser. Re-run it if you move the folder. See
+[`helper/README.md`](helper/README.md) for what it can and can't do —
+it's the part worth reviewing before you trust it. Linux only for now.
+
+### 3. An API key
+
+Open the extension's settings, paste an Anthropic API key, and set the
+path to your notes file. Claude is the only LLM option today; ChatGPT
+and Gemini are planned, will eventually be selectable in settings.
+
+## Building
+
+To produce your own signed `.xpi`, see [`BUILDING.md`](BUILDING.md).
 
 ## License
 
