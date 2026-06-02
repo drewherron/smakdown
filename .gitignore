@@ -12,6 +12,9 @@ node_modules/
 dist/
 build/
 
+# web-ext signing
+extension/.amo-upload-uuid
+
 # OS
 .DS_Store
 Thumbs.db
